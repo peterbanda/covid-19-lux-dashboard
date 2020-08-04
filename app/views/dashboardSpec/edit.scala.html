@@ -1,0 +1,22 @@
+@import views.html.layout
+@import views.html.dashboardSpec.{dataSetTypeahead, elements}
+@import reactivemongo.bson.BSONObjectID
+@import org.incal.play.controllers.{WebContext, IdForm}
+@import org.incal.play.controllers.WebContext._
+
+@(
+    data: IdForm[BSONObjectID, DashboardSpec]
+)(
+    implicit context: WebContext
+)
+
+@layout.edit(
+    "Dashboard Spec",
+    "dashboardSpec",
+	errors = data.form.errors,
+    elements = elements(data.form),
+	updateCall = controllers.covid.routes.DashboardSpecController.update(data.id),
+	cancelCall = controllers.covid.routes.DashboardSpecController.listAll(),
+    deleteCall = Some(controllers.covid.routes.DashboardSpecController.delete(data.id)),
+    bottomResources = Some(dataSetTypeahead())
+)

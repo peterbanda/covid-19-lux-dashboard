@@ -1,0 +1,482 @@
+@import org.incal.play.routes.CustomDirAssets
+@import views.html.chart.highcharts.highchartsJsImport
+@import views.html.widget.{widgetPanel, widgetPanelJs}
+@import org.ada.web.models.Widget
+@import org.incal.play.controllers.WebContext
+@import org.incal.play.controllers.WebContext._
+
+@(
+  cases: Int,
+  deaths: Int,
+  recovered: Int,
+  testsPerformed: Int,
+  widgets: Traversable[Widget]
+)(implicit context: WebContext)
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>COVID-19 LUX Dashboard</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/img/favicon.png")" rel="icon">
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/img/apple-touch-icon.png")" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/vendor/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/vendor/icofont/icofont.min.css")" rel="stylesheet">
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/vendor/boxicons/css/boxicons.min.css")" rel="stylesheet">
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/vendor/venobox/venobox.css")" rel="stylesheet">
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/vendor/owl.carousel/assets/owl.carousel.min.css")" rel="stylesheet">
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/vendor/aos/aos.css")" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="@CustomDirAssets.versioned("iPortfolio/assets/css/style.css")" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: iPortfolio - v1.2.1
+  * Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Mobile nav toggle button ======= -->
+  <button type="button" class="mobile-nav-toggle d-xl-none"><i class="icofont-navigation-menu"></i></button>
+
+  <!-- ======= Header ======= -->
+  <header id="header">
+    <div class="d-flex flex-column">
+
+      <div class="profile">
+        <img src="@CustomDirAssets.versioned("images/research_lux-small.png")" alt="" class="img-fluid rounded-circle">
+        <h1 class="text-light"><a href="/">COVID-19 LUX</a></h1>
+        <div class="social-links mt-3 text-center">
+          <a href="https://lux-covid19.lu" data-toggle="tooltip" data-placement="bottom" title="Home">
+            <i class="bx bxl-medium"></i>
+          </a>
+          <a href="https://www.lih.lu/page/coronavirus" data-placement="bottom" title="COVID-19 @@ LIH">
+            <i class="bx bxl-500px"></i>
+          </a>
+          <a href="https://en.wikipedia.org/wiki/Coronavirus_disease_2019" data-placement="bottom" title="Wikipedia">
+            <i class="bx bxl-wikipedia"></i>
+          </a>
+          <a href="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6" data-placement="bottom" title="COVID-19 Dashboard by Johns Hopkins University">
+            <i class="bx bx-bar-chart"></i>
+          </a>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <ul>
+          <li class="active"><a href="/"><i class="bx bx-home"></i> <span>Home</span></a></li>
+          <li><a href="#about"><i class="bx bx-user"></i> <span>About</span></a></li>
+          <li><a href="#dashboard"><i class="bx bx-abacus"></i> <span>Dashboard</span></a></li>
+          <li><a href="#maps"><i class="bx bx-map"></i>Maps</a></li>
+          <li><a href="#api"><i class="bx bx-data"></i>Data API</a></li>
+          <li><a href="#contact"><i class="bx bx-envelope"></i> Contact</a></li>
+
+        </ul>
+      </nav><!-- .nav-menu -->
+      <button type="button" class="mobile-nav-toggle d-xl-none"><i class="icofont-navigation-menu"></i></button>
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="hero-container" data-aos="fade-in">
+      <h1>COVID-19 Dashboard</h1>
+      <p>showing (interactive) charts about <span class="typed" data-typed-items="statistical pandemic projections, ICU/bed occupancy, regional differences"></span> in <b>Luxembourg</b>.</p>
+    </div>
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>About</h2>
+          <p>In response to the COVID-19 pandemic in Luxembourg, Research Luxembourg has established the COVID-19 Task Force to coordinate and align concrete work efforts and communication between the research institutions, ministries and hospitals in the country.</p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-4" data-aos="fade-right">
+            <img src="@CustomDirAssets.versioned("images/luxembourg-map-0.jpg")" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-8 pt-4 pt-lg-0 content" data-aos="fade-left">
+            <h3>Luxembourg</h3>
+            <p class="font-italic">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+              magna aliqua.
+            </p>
+            <div class="row">
+              <div class="col-lg-6">
+                <ul>
+                  <li><i class="icofont-rounded-right"></i> <strong>Population:</strong> 613 894</li>
+                  <li><i class="icofont-rounded-right"></i> <strong>Average Age:</strong> 39.7</li>
+                  <li><i class="icofont-rounded-right"></i> <strong>xxx:</strong>...</li>
+                  <li><i class="icofont-rounded-right"></i> <strong>xxx:</strong>...</li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul>
+                  <li><i class="icofont-rounded-right"></i> <strong>xxx:</strong> 30</li>
+                  <li><i class="icofont-rounded-right"></i> <strong>xxx:</strong> ...</li>
+                  <li><i class="icofont-rounded-right"></i> <strong>xxx:</strong> ...</li>
+                  <li><i class="icofont-rounded-right"></i> <strong>xxx:</strong> ...</li>
+                </ul>
+              </div>
+            </div>
+            <p>
+              Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
+              Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis culpa magni laudantium dolores.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section><!-- End About Section -->
+
+    <!-- ======= Facts Section ======= -->
+    <section id="facts" class="facts">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>COVID-19 Facts</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row no-gutters">
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up">
+            <div class="count-box">
+              <i class="icofont-alarm"></i>
+              <span data-toggle="counter-up">@cases</span>
+              <p><strong>Cases</strong></p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="100">
+            <div class="count-box">
+              <i class="icofont-arrow-down"></i>
+              <span data-toggle="counter-up">@deaths</span>
+              <p><strong>Deaths</strong></p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="200">
+            <div class="count-box">
+              <i class="icofont-recycle"></i>
+              <span data-toggle="counter-up">@recovered</span>
+              <p><strong>Recovered</strong></p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-md-flex align-items-md-stretch" data-aos="fade-up" data-aos-delay="300">
+            <div class="count-box">
+              <i class="icofont-test-tube"></i>
+              <span data-toggle="counter-up">@testsPerformed</span>
+              <p><strong>Tests Performed</strong></p>
+            </div>
+          </div>
+        </div>
+        <hr/>
+      </div>
+    </section><!-- End Facts Section -->
+
+    <!-- ======= Resume Section ======= -->
+    <section id="dashboard" class="resume">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Dashboard</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        @if(widgets.nonEmpty) {
+          @widgetPanel(widgets, 12 / widgets.size)
+        }
+
+      </div>
+    </section><!-- End Resume Section -->
+
+    <!-- ======= Portfolio Section ======= -->
+    <section id="maps" class="portfolio section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Maps</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div id="map-1"></div>
+          </div>
+          <div class="col-md-6">
+            <div id="map-2"></div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Portfolio Section -->
+
+    <!-- ======= Portfolio Section ======= -->
+    <section id="api" class="section-bg">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>API</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row">
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+    </section><!-- End Portfolio Section -->
+
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Contact</h2>
+          <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p>
+        </div>
+
+        <div class="row" data-aos="fade-in">
+
+          <div class="col-lg-5 d-flex align-items-stretch">
+            <div class="info">
+              <div class="address">
+                <i class="icofont-google-map"></i>
+                <h4>Location:</h4>
+                <p>..., Luxembourg</p>
+              </div>
+
+              <div class="email">
+                <i class="icofont-envelope"></i>
+                <h4>Email:</h4>
+                <p>contact@@lih.lu</p>
+              </div>
+
+              <div class="phone">
+                <i class="icofont-phone"></i>
+                <h4>Call:</h4>
+                <p>+352 xxxxxxxx </p>
+              </div>
+
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2584.8144864351734!2d6.093853116015511!3d49.62010197936951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47954eb72e9c0e9d%3A0xe7e48d82aa44d559!2sLuxembourg%20Institute%20Of%20Health!5e0!3m2!1sen!2ssk!4v1587760402088!5m2!1sen!2ssk" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+            </div>
+
+          </div>
+
+          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="name">Your Name</label>
+                  <input type="text" name="name" class="form-control" id="name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                  <div class="validate"></div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="name">Your Email</label>
+                  <input type="email" class="form-control" name="email" id="email" data-rule="email" data-msg="Please enter a valid email" />
+                  <div class="validate"></div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="name">Subject</label>
+                <input type="text" class="form-control" name="subject" id="subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                <div class="validate"></div>
+              </div>
+              <div class="form-group">
+                <label for="name">Message</label>
+                <textarea class="form-control" name="message" rows="10" data-rule="required" data-msg="Please write something for us"></textarea>
+                <div class="validate"></div>
+              </div>
+              <div class="mb-3">
+                <div class="loading">Loading</div>
+                <div class="error-message"></div>
+                <div class="sent-message">Your message has been sent. Thank you!</div>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- End Contact Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+    <div class="container">
+      <div class="copyright">
+        <div>
+        &copy; <strong><span><a href="https://www.fnr.lu/research-in-luxembourg">Research Luxembourg</a></span></strong> 2020
+        </div>
+        <div>
+          All rights reserved
+        </div>
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End  Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
+
+  <!-- Vendor JS Files
+  -->
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/jquery/jquery-3.4.1.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/jquery.easing/jquery.easing.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/php-email-form/validate.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/waypoints/jquery.waypoints.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/counterup/counterup.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/isotope-layout/isotope.pkgd.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/venobox/venobox.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/owl.carousel/owl.carousel.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/typed.js/typed.min.js")"></script>
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/vendor/aos/aos.js")"></script>
+
+  <script type="text/javascript" src="@CustomDirAssets.versioned("javascripts/main.js")"></script>
+
+  @highchartsJsImport()
+
+  <script src="@routes.WebJarAssets.at(context.webJarAssets.fullPath("highcharts", "/modules/map.js"))"></script>
+  <script src="https://code.highcharts.com/mapdata/1.1.0/countries/lu/lu-all.js"></script>
+
+  @widgetPanelJs(widgets)
+
+  <!-- Template Main JS File -->
+  <script src="@CustomDirAssets.versioned("iPortfolio/assets/js/main.js")"></script>
+
+  <script>
+          // Prepare demo data
+          // Data is joined to map using value of 'hc-key' property by default.
+          // See API docs for 'joinBy' for more info on linking data and map.
+          var data1 = [
+            ['lu-di', 0],
+            ['lu-gr', 1],
+            ['lu-lu', 2],
+          ];
+
+          var data2 = [
+            ['lu-gr', 0],
+            ['lu-lu', 1],
+          ];
+
+          // Create the chart
+          Highcharts.mapChart('map-1', {
+            chart: {
+              map: 'countries/lu/lu-all'
+            },
+
+            title: {
+              text: 'Luxembourg Distribution 1'
+            },
+
+            subtitle: {
+              text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/lu/lu-all.js">Luxembourg</a>'
+            },
+
+            mapNavigation: {
+              enabled: true,
+              buttonOptions: {
+                verticalAlign: 'bottom'
+              }
+            },
+
+            colorAxis: {
+              min: 0
+            },
+
+            series: [{
+              data: data1,
+              name: 'Random data',
+              states: {
+                hover: {
+                  color: '#BADA55'
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+              }
+            }]
+          });
+
+          // Create the chart
+          Highcharts.mapChart('map-2', {
+            chart: {
+              map: 'countries/lu/lu-all'
+            },
+
+            title: {
+              text: 'Luxembourg Distribution 1'
+            },
+
+            subtitle: {
+              text: 'Source map: <a href="http://code.highcharts.com/mapdata/countries/lu/lu-all.js">Luxembourg</a>'
+            },
+
+            mapNavigation: {
+              enabled: true,
+              buttonOptions: {
+                verticalAlign: 'bottom'
+              }
+            },
+
+            colorAxis: {
+              min: 0
+            },
+
+            series: [{
+              data: data2,
+              name: 'Random data',
+              states: {
+                hover: {
+                  color: '#BADA55'
+                }
+              },
+              dataLabels: {
+                enabled: true,
+                format: '{point.name}'
+              }
+            }]
+          });
+  </script>
+
+</body>
+
+</html>

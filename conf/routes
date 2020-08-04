@@ -1,0 +1,15 @@
+# Routes
+
+->          /ada                                              core.Routes
+
+GET         /                                                 controllers.covid.Covid19LuxDashboardController.index
+
+# dashboard specs
+GET         /dashboardSpecs                                   controllers.covid.DashboardSpecController.find(p: Int ?= 0, s: String ?= "original", filter: Seq[org.incal.core.FilterCondition] ?= Nil)
+GET         /dashboardSpecs/all                               controllers.covid.DashboardSpecController.listAll(s: String ?= "original")
+GET         /dashboardSpecs/new                               controllers.covid.DashboardSpecController.create
+POST        /dashboardSpecs/save                              controllers.covid.DashboardSpecController.save
+GET         /dashboardSpecs/:id/get                           controllers.covid.DashboardSpecController.get(id: BSONObjectID)
+GET         /dashboardSpecs/:id                               controllers.covid.DashboardSpecController.edit(id: BSONObjectID)
+POST        /dashboardSpecs/:id                               controllers.covid.DashboardSpecController.update(id: BSONObjectID)
+POST        /dashboardSpecs/:id/delete                        controllers.covid.DashboardSpecController.delete(id: BSONObjectID)

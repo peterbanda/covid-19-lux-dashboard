@@ -1,0 +1,48 @@
+@import views.html.layout
+@import views.html.table.paginatedTable
+@import org.ada.web.util.typeColumns
+@import models.DashboardSpec
+@import org.incal.play.controllers.WebContext._
+@import org.incal.play.controllers.WebContext
+@import org.incal.play.Page
+@import org.incal.core.FilterCondition
+@import org.ada.web.controllers.routes
+@import org.ada.web.util.shorten
+
+@(
+    page: Page[DashboardSpec],
+    conditions: Seq[FilterCondition]
+)(
+    implicit context: WebContext
+)
+
+@actions = {
+    <div class="row">
+        <div class="col-md-4">
+            <a class="btn btn-success btn-sm pull-right" id="add" href="@controllers.covid.routes.DashboardSpecController.create()" title="Add New">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+}
+
+@table = @{
+    paginatedTable(
+        page,
+        controllers.covid.routes.DashboardSpecController.find(_, _, conditions),
+        typeColumns[DashboardSpec](
+            (Some("sourceDataSetIds"), "Source Data Set Ids", (x) => shorten(x.sourceDataSetIds.mkString(", "), 100)),
+            (Some("timeCreated"), "Time Created", _.timeCreated)
+        ),
+        Some({ item : Any => controllers.covid.routes.DashboardSpecController.get(item.asInstanceOf[DashboardSpec]._id.get)})
+    )
+}
+
+@layout.list(
+    "dashboardSpec",
+    None,
+    page.total,
+    Some(actions),
+    Some(table),
+    None
+)

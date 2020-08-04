@@ -1,0 +1,19 @@
+@import views.html.dashboardSpec.{dataSetTypeahead, elements}
+@import org.incal.play.controllers.WebContext
+@import org.incal.play.controllers.WebContext._
+
+@(
+    form: Form[DashboardSpec]
+)(
+    implicit webContext: WebContext
+)
+
+@layout.create(
+    "DashboardSpec",
+    "dashboardSpec",
+    form = form,
+    elements = elements(form),
+    saveCall = controllers.covid.routes.DashboardSpecController.save(),
+    listCall = controllers.covid.routes.DashboardSpecController.listAll(),
+    bottomResources = Some(dataSetTypeahead())
+)
